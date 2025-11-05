@@ -12,10 +12,14 @@ def show_image():
             break
 
         # ここでyoloを動かして検知させる
-        results = model(frame)
+        results = model.track(frame)
 
         # 結果をフレームに描画して表示
         annotated_frame = results[0].plot()
+
+        # リサイズ
+        # yoloを適用する過程で、4 : 3になるのに留意
+        annotated_frame = cv2.resize(annotated_frame, (1000, 750))
 
         # 映像を垂れ流す
         cv2.imshow("camera", annotated_frame)
