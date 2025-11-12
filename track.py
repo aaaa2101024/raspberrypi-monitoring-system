@@ -12,11 +12,12 @@ def show_image():
             break
 
         # ここでyoloを動かして検知させる
-        results = model.track(frame)
+        results = model.track(frame, conf=0.5)
 
         # 結果をフレームに描画して表示
         annotated_frame = results[0].plot()
 
+        # 値の取得などを行うなど
         # リサイズ
         # yoloを適用する過程で、4 : 3になるのに留意
         annotated_frame = cv2.resize(annotated_frame, (1000, 750))
