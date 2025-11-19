@@ -13,6 +13,7 @@ class Track:
         self.used_id = set()
         self.people_count = 0
         # yoloとopencvの変数たち
+        # ここの変数はカメラが何かで変える必要がある
         self.cap = cv2.VideoCapture(1)
         self.model = YOLO("yolo11n.pt")
 
@@ -23,18 +24,22 @@ class Track:
             self.used_id.add(track_id)
             if x < CENTRAL:
                 self.left.add(track_id)
+                self.used_id.add(track_id)
             else:
                 self.right.add(track_id)
+                self.used_id.add(track_id)
 
         # 人数の増減判定
         # 左側(部屋の人数増加)
         if track_id in self.left and x >= CENTRAL:
             self.people_count += 1
             self.left.discard(track_id)
+            self.right.add(track_id)
         # 右側(部屋の人数減少)
         if track_id in self.right and x < CENTRAL:
             self.people_count -= 1
             self.right.discard(track_id)
+            self.left.add(track_id)
 
     def show_image(self):
         while True:
@@ -45,6 +50,7 @@ class Track:
 
             # yoloを動かして検知させる
             # confが閾値, classesが検出する対象
+            # persist , verboseがログを出力するかどうか
             results = self.model.track(
                 frame, conf=0.5, classes=[PEOPLE], persist=True, verbose=False
             )
@@ -58,9 +64,7 @@ class Track:
 
                 # バウンディングボックスの座標を取得
                 # xがx座標の中心
-                x, y, w, h = item.boxes.xywh.cpu().numpy()[
-                    0
-                ]  
+                x, y, w, h = item.boxes.xywh.cpu().numpy()[0]
                 id_value = item.boxes.id  # トラッキングIDを取得 存在しない場合はNone
                 if id_value is None:  # トラッキングIDが存在しないなら空文字
                     track_id = ""
