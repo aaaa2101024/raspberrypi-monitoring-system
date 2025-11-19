@@ -14,7 +14,7 @@ class Track:
         self.people_count = 0
         # yoloとopencvの変数たち
         # ここの変数はカメラが何かで変える必要がある
-        self.cap = cv2.VideoCapture(1)
+        self.cap = cv2.VideoCapture(0)
         self.model = YOLO("yolo11n.pt")
 
     def check_people(self, track_id, x):
@@ -50,7 +50,7 @@ class Track:
 
             # yoloを動かして検知させる
             # confが閾値, classesが検出する対象
-            # persist , verboseがログを出力するかどうか
+            # persistがIDを保持する設定, verboseがログを出力するかどうか
             results = self.model.track(
                 frame, conf=0.5, classes=[PEOPLE], persist=True, verbose=False
             )
