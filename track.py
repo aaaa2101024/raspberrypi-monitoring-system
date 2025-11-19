@@ -1,5 +1,7 @@
 import cv2
 from ultralytics import YOLO
+import datetime
+import csv
 
 CENTRAL = 320
 PEOPLE = 0
@@ -16,6 +18,7 @@ class Track:
         # ここの変数はカメラが何かで変える必要がある
         self.cap = cv2.VideoCapture(0)
         self.model = YOLO("yolo11n.pt")
+        self.time_format = "%Y-%m-%d %H:%M:%S"
 
     def check_people(self, track_id, x):
         # 登録されていないidであったら登録処理
@@ -35,11 +38,36 @@ class Track:
             self.people_count += 1
             self.left.discard(track_id)
             self.right.add(track_id)
+
+            # add csv
+            current_time = datetime.datetime.now()
+            time = current_time.strftime(self.time_format)
+            date = []
+            date.append(track_id)
+            date.append(time)
+            date.append("in")
+            with open("result.csv", "a", newline="", encoding="utf-8") as f:
+                writer = csv.writer(f)
+
+                writer.writerow(date)
+
         # 右側(部屋の人数減少)
         if track_id in self.right and x < CENTRAL:
             self.people_count -= 1
             self.right.discard(track_id)
             self.left.add(track_id)
+            
+            # add csv
+            current_time = datetime.datetime.now()
+            time = current_time.strftime(self.time_format)
+            date = []
+            date.append(track_id)
+            date.append(time)
+            date.append("out")
+            with open("result.csv", "a", newline="", encoding="utf-8") as f:
+                writer = csv.writer(f)
+
+                writer.writerow(date)
 
     def show_image(self):
         while True:
@@ -52,7 +80,7 @@ class Track:
             # confが閾値, classesが検出する対象
             # persist , verboseがログを出力するかどうか
             results = self.model.track(
-                frame, imgsz=320, conf=0.7, classes=[PEOPLE], persist=True, verbose=False
+                frame, imgsz=256, conf=0.7, classes=[PEOPLE], persist=True, verbose=False
             )
 
             # 結果をフレームに描画して表示
@@ -72,7 +100,8 @@ class Track:
                     track_id = item.boxes.id.int().cpu().tolist()[0]
 
                 # 部屋の人数カウントの検証を行う
-                self.check_people(track_id, x)
+                if not track_id == "":
+                    self.check_people(track_id, x)
 
             # # リサイズ
             # # yoloを適用する過程で、4 : 3になるのに留意
@@ -82,6 +111,7 @@ class Track:
             cv2.imshow("camera", annotated_frame)
 
             # 部屋人数の出力
+
             print("people : " + str(self.people_count))
 
             # 'q'を押すと終了
