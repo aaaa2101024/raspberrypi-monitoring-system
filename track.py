@@ -14,7 +14,7 @@ class Track:
         self.people_count = 0
         # yoloとopencvの変数たち
         # ここの変数はカメラが何かで変える必要がある
-        self.cap = cv2.VideoCapture(1)
+        self.cap = cv2.VideoCapture(0)
         self.model = YOLO("yolo11n.pt")
 
     def check_people(self, track_id, x):
@@ -52,7 +52,7 @@ class Track:
             # confが閾値, classesが検出する対象
             # persist , verboseがログを出力するかどうか
             results = self.model.track(
-                frame, conf=0.5, classes=[PEOPLE], persist=True, verbose=False
+                frame, imgsz=320, conf=0.7, classes=[PEOPLE], persist=True, verbose=False
             )
 
             # 結果をフレームに描画して表示
@@ -74,9 +74,9 @@ class Track:
                 # 部屋の人数カウントの検証を行う
                 self.check_people(track_id, x)
 
-            # リサイズ
-            # yoloを適用する過程で、4 : 3になるのに留意
-            annotated_frame = cv2.resize(annotated_frame, (1000, 750))
+            # # リサイズ
+            # # yoloを適用する過程で、4 : 3になるのに留意
+            # annotated_frame = cv2.resize(annotated_frame, (1000, 750))
 
             # 映像を垂れ流す
             cv2.imshow("camera", annotated_frame)
