@@ -20,6 +20,18 @@ class Track:
         self.model = YOLO("yolo11n.pt")
         self.time_format = "%Y-%m-%d %H:%M:%S"
 
+    def add_csv(self, track_id, tag):
+        current_time = datetime.datetime.now()
+        time = current_time.strftime(self.time_format)
+        date = []
+        date.append(track_id)
+        date.append(time)
+        date.append(tag)
+        date.append(self.people_count)
+        with open("result.csv", "a", newline="", encoding="utf-8") as f:
+            writer = csv.writer(f)
+            writer.writerow(date)
+
     def check_people(self, track_id, x):
         # 登録されていないidであったら登録処理
         if track_id not in self.used_id:
@@ -40,17 +52,7 @@ class Track:
             self.right.add(track_id)
 
             # add csv
-            current_time = datetime.datetime.now()
-            time = current_time.strftime(self.time_format)
-            date = []
-            date.append(track_id)
-            date.append(time)
-            date.append("in")
-            date.append(self.people_count)
-            with open("result.csv", "a", newline="", encoding="utf-8") as f:
-                writer = csv.writer(f)
-
-                writer.writerow(date)
+            self.add_csv(track_id, "in")
 
         # 右側(部屋の人数減少)
         if track_id in self.right and x < CENTRAL:
@@ -59,17 +61,7 @@ class Track:
             self.left.add(track_id)
 
             # add csv
-            current_time = datetime.datetime.now()
-            time = current_time.strftime(self.time_format)
-            date = []
-            date.append(track_id)
-            date.append(time)
-            date.append("out")
-            date.append(self.people_count)
-            with open("result.csv", "a", newline="", encoding="utf-8") as f:
-                writer = csv.writer(f)
-
-                writer.writerow(date)
+            self.add_csv(track_id, "out")
 
     def show_image(self):
         while True:
@@ -115,10 +107,9 @@ class Track:
             # annotated_frame = cv2.resize(annotated_frame, (1000, 750))
 
             # 映像を垂れ流す
-            cv2.imshow("camera", annotated_frame)
+            # cv2.imshow("camera", annotated_frame)
 
             # 部屋人数の出力
-
             print("people : " + str(self.people_count))
 
             # 'q'を押すと終了
