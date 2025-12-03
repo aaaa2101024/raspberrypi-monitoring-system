@@ -1,5 +1,5 @@
 # 修正箇所：ambientモジュールからAmbientクラスをインポート
-import ambient
+from ambient import Ambient
 import pandas as pd
 import time
 import random
@@ -14,7 +14,7 @@ def get_date():
 CHANNEL_ID = 96959  # チャンネルID
 WRITE_KEY = "60a58a651c5cdb19"  # ライトキー
 
-am = ambient(CHANNEL_ID, WRITE_KEY)
+am = Ambient(CHANNEL_ID, WRITE_KEY)
 
 print("データ送信を開始します (Ctrl+C で停止)")
 
