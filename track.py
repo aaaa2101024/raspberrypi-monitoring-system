@@ -16,7 +16,7 @@ class Track:
         self.people_count = 0
         # yoloとopencvの変数たち
         # ここの変数はカメラが何かで変える必要がある
-        self.cap = cv2.VideoCapture(0)
+        self.cap = cv2.VideoCapture(1)
         self.model = YOLO("yolo11n.pt")
         self.time_format = "%Y-%m-%d %H:%M:%S"
 
@@ -46,6 +46,7 @@ class Track:
             date.append(track_id)
             date.append(time)
             date.append("in")
+            date.append(self.people_count)
             with open("result.csv", "a", newline="", encoding="utf-8") as f:
                 writer = csv.writer(f)
 
@@ -56,7 +57,7 @@ class Track:
             self.people_count -= 1
             self.right.discard(track_id)
             self.left.add(track_id)
-            
+
             # add csv
             current_time = datetime.datetime.now()
             time = current_time.strftime(self.time_format)
@@ -64,6 +65,7 @@ class Track:
             date.append(track_id)
             date.append(time)
             date.append("out")
+            date.append(self.people_count)
             with open("result.csv", "a", newline="", encoding="utf-8") as f:
                 writer = csv.writer(f)
 
@@ -80,7 +82,12 @@ class Track:
             # confが閾値, classesが検出する対象
             # persistがIDを保持する設定, verboseがログを出力するかどうか
             results = self.model.track(
-                frame, imgsz=256, conf=0.7, classes=[PEOPLE], persist=True, verbose=False
+                frame,
+                imgsz=256,
+                conf=0.5,
+                classes=[PEOPLE],
+                persist=True,
+                verbose=False,
             )
 
             # 結果をフレームに描画して表示
