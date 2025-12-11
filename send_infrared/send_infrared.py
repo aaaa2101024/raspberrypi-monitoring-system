@@ -18,9 +18,14 @@ class Send_infrared:
             print(current_people)
             subprocess.run(["cgir", "send", self.keys[current_people]])
             self.pres_people = current_people
-        time.sleep(10)
+        # return flag
+        if self.pres_people == 0:
+            return 0
+        else:
+            return 1
 
 if __name__ == "__main__":
     send_infrared = Send_infrared()
     while True:
         send_infrared.control_airconditioner(get_people_count())
+        time.sleep(10)
