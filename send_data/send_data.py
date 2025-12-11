@@ -2,7 +2,6 @@
 from ambient import Ambient
 import pandas as pd
 import time
-import random
 
 # from ..test.sensor import get_sensor_data
 from sensor.sensor import get_sensor_data
