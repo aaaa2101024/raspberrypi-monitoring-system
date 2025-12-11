@@ -9,12 +9,13 @@ pres_people = -1
 
 while(True):
     current_people = get_people_count()
-    if pres_people != current_people and pres_people == 0:
-        subprocess.run(["cgir", "send", "heat-om"])
-        time.sleep(1)
-    if pres_people != current_people:
-        # command
-        print(current_people)
-        subprocess.run(["cgir", "send", keys[current_people]])
-        pres_people = current_people
+    if current_people >= 0:
+        if pres_people != current_people and pres_people == 0:
+            subprocess.run(["cgir", "send", "heat-om"])
+            time.sleep(1)
+        if pres_people != current_people:
+            # command
+            print(current_people)
+            subprocess.run(["cgir", "send", keys[current_people]])
+            pres_people = current_people
     time.sleep(10)
