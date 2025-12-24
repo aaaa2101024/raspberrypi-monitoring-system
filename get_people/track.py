@@ -16,8 +16,8 @@ class Track:
         self.people_count = 0
         # yoloとopencvの変数たち
         # ここの変数はカメラが何かで変える必要がある
-        self.cap = cv2.VideoCapture(1)
-        self.model = YOLO("yolo11n.pt")
+        self.cap = cv2.VideoCapture(0)
+        self.model = YOLO("./get_people/yolo11n.pt")
         self.time_format = "%Y-%m-%d %H:%M:%S"
 
     def add_csv(self, track_id, tag):
@@ -28,7 +28,7 @@ class Track:
         date.append(time)
         date.append(tag)
         date.append(self.people_count)
-        with open("result.csv", "a", newline="", encoding="utf-8") as f:
+        with open("./data/result.csv", "a", newline="", encoding="utf-8") as f:
             writer = csv.writer(f)
             writer.writerow(date)
 
