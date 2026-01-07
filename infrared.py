@@ -3,7 +3,7 @@ import time
 from data.get_data import get_people_count
 
 # by people count backet
-keys = [
+KEYS = [
     "off",
     "temperture=24.0",
     "temperture=23.5",
@@ -16,6 +16,8 @@ keys = [
     "temperture=20.0",
 ]
 
+SLEEP_TIME = 10
+
 pres_people = -1
 
 while True:
@@ -27,6 +29,6 @@ while True:
         if pres_people != current_people:
             # command
             print(current_people)
-            subprocess.run(["cgir", "send", keys[current_people]])
+            subprocess.run(["cgir", "send", KEYS[current_people]])
             pres_people = current_people
-    time.sleep(10)
+    time.sleep(SLEEP_TIME)

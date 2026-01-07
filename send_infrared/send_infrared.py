@@ -2,6 +2,8 @@ import subprocess
 import time
 from data.get_data import get_people_count
 
+SLEEP_TIME = 10
+
 class Send_infrared:
     def __init__(self):
         self.keys = ["off", "temperture=24.0", "temperture=23.5", "temperture=23.0", "temperture=22.5", "temperture=22.0", "temperture=21.5", "temperture=21.0", "temperture=20.5", "temperture=20.0"]
@@ -28,4 +30,4 @@ if __name__ == "__main__":
     send_infrared = Send_infrared()
     while True:
         send_infrared.control_airconditioner(get_people_count())
-        time.sleep(10)
+        time.sleep(SLEEP_TIME)
