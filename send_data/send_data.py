@@ -8,8 +8,10 @@ from sensor.sensor import get_sensor_data
 from data.get_data import get_people_count
 from send_infrared.send_infrared import Send_infrared
 
-CHANNEL_ID = 96959  # チャンネルID
-WRITE_KEY = "60a58a651c5cdb19"  # ライトキー
+# 環境変数
+from setting import CHANNEL_ID
+from setting import WRITE_KEY
+
 am = Ambient(CHANNEL_ID, WRITE_KEY)
 
 send_infrared = Send_infrared()
