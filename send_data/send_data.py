@@ -40,3 +40,7 @@ try:
 
 except KeyboardInterrupt:
     print("\n停止しました")
+
+
+if __name__ == "__main__":
+    pass
