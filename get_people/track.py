@@ -2,6 +2,8 @@ import cv2
 from ultralytics import YOLO
 import datetime
 import csv
+from setting import CAMERA_NUMBER
+
 
 CENTRAL = 320
 PEOPLE = 0
@@ -16,7 +18,7 @@ class Track:
         self.people_count = 0
         # yoloとopencvの変数たち
         # ここの変数はカメラが何かで変える必要がある
-        self.cap = cv2.VideoCapture(0)
+        self.cap = cv2.VideoCapture(CAMERA_NUMBER)
         self.model = YOLO("./get_people/yolo11n.pt")
         self.time_format = "%Y-%m-%d %H:%M:%S"
 

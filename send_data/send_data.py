@@ -18,6 +18,8 @@ send_infrared = Send_infrared()
 
 print("データ送信を開始します (Ctrl+C で停止)")
 
+SLEEP_TIME = 10
+
 try:
     while True:
         # ダミーデータ生成
@@ -34,7 +36,7 @@ try:
             print(f"送信成功: 温度={temp:.2f}, 湿度={humid:.2f}")
         else:
             print(f"送信失敗: {r.status_code}")
-        time.sleep(10)
+        time.sleep(SLEEP_TIME)
 
 except KeyboardInterrupt:
     print("\n停止しました")
