@@ -2,12 +2,12 @@ import cv2
 from ultralytics import YOLO
 import datetime
 import csv
-from setting import CAMERA_NUMBER
+# from setting import CAMERA_NUMBER
 
 
 CENTRAL = 320
 PEOPLE = 0
-
+CAMERA_NUMBER = 0
 
 class Track:
     def __init__(self):
@@ -106,10 +106,10 @@ class Track:
 
             # # リサイズ
             # # yoloを適用する過程で、4 : 3になるのに留意
-            # annotated_frame = cv2.resize(annotated_frame, (1000, 750))
+            annotated_frame = cv2.resize(annotated_frame, (1000, 750))
 
             # 映像を垂れ流す
-            # cv2.imshow("camera", annotated_frame)
+            cv2.imshow("camera", annotated_frame)
 
             # 部屋人数の出力
             print("people : " + str(self.people_count))
