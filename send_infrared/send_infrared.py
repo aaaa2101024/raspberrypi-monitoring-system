@@ -18,7 +18,7 @@ class Send_infrared:
         if self.pres_people != current_people:
             # command
             print(current_people)
-            subprocess.run(["cgir", "send", self.keys[current_people]])
+            subprocess.run(["cgir", "send", self.keys[min([current_people, 7])]])
             self.pres_people = current_people
         # return flag
         if self.pres_people == 0:

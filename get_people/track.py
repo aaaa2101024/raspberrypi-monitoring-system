@@ -15,10 +15,10 @@ class Track:
         self.left = set()
         self.right = set()
         self.used_id = set()
-        self.people_count = 0
+        self.people_count = 12
         # yoloとopencvの変数たち
         # ここの変数はカメラが何かで変える必要がある
-        self.cap = cv2.VideoCapture(CAMERA_NUMBER)
+        self.cap = cv2.VideoCapture(0)
         self.model = YOLO("./get_people/yolo11n.pt")
         self.time_format = "%Y-%m-%d %H:%M:%S"
 
