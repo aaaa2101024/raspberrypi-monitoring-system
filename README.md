@@ -35,7 +35,7 @@ python -m get_people.track
 
 
 ## システム構成図
-![](./images/archtect.png)
+![システム構成図](./images/システム構成図.png)
 
 ## 起動例
 ambientでは, 以下のような形式で記録され, 閲覧を行うことができます. 
