@@ -1,0 +1,100 @@
+classDiagram
+    direction TB
+
+    class main {
+        <<entrypoint>>
+        +main()
+    }
+
+    class Send_data {
+        +Ambient am
+        +Send_infrared send_infrared
+        +int SLEEP_TIME
+        +__init__()
+        +main()
+    }
+
+    class Send_infrared {
+        +list keys
+        +int pres_people
+        +__init__()
+        +control_airconditioner(current_people int) int
+    }
+
+    class Track {
+        +set left
+        +set right
+        +set used_id
+        +int people_count
+        +VideoCapture cap
+        +YOLO model
+        +str time_format
+        +__init__()
+        +add_csv(track_id, tag)
+        +check_people(track_id, x)
+        +show_image()
+    }
+
+    class sensor {
+        <<module>>
+        +get_sensor_data() tuple
+    }
+
+    class get_data {
+        <<module>>
+        +get_people_count() int
+    }
+
+    class setting {
+        <<module>>
+        +CHANNEL_ID str
+        +WRITE_KEY str
+        +CAMERA_NUMBER str
+    }
+
+    class Ambient {
+        <<external library>>
+        +send(data dict)
+    }
+
+    class BME280 {
+        <<external: cgsensor>>
+        +temperature float
+        +humidity float
+        +pressure float
+        +forced()
+    }
+
+    class YOLO {
+        <<external: ultralytics>>
+        +track(frame, ...) Results
+    }
+
+    class result_csv {
+        <<file: data/result.csv>>
+        +track_id
+        +time
+        +tag
+        +people_count
+    }
+
+    class cgir {
+        <<external command>>
+        +send(key str)
+    }
+
+    main --> Send_data : instantiate
+    Send_data *-- Send_infrared : owns
+    Send_data --> Ambient : uses
+    Send_data ..> sensor : calls
+    Send_data ..> get_data : calls
+    Send_data ..> setting : reads config
+
+    Send_infrared ..> get_data : calls
+    Send_infrared --> cgir : subprocess
+
+    Track --> YOLO : uses
+    Track ..> result_csv : writes
+
+    sensor --> BME280 : uses
+    get_data ..> result_csv : reads

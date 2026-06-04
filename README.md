@@ -33,9 +33,11 @@ python -m get_people.track
 - ラズベリーパイ拡張モジュール
   - www.amazon.co.jp/dp/B0792C954T
 
-
 ## システム構成図
 ![システム構成図](./images/システム構成図.png)
+
+## プログラムのクラス図
+![alt text](設計.png)
 
 ## 起動例
 ambientでは, 以下のような形式で記録され, 閲覧を行うことができます. 
